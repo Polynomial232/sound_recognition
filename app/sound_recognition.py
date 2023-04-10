@@ -5,11 +5,12 @@ import os
 import tensorflow as tf
 import tensorflow_io as tfio
 import os
+from text_recognition import text_recognition
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-CLASSES = ['invalid','valid']
-STATUS = [2, 1]
+CLASSES = ['valid', 'invalid', 'valid-online']
+STATUS = [1, 2, 3]
 LENGTH = 48_000
 FRAME_LENGTH = 80
 FRAME_STEP = 32
@@ -62,6 +63,9 @@ def recognition(file_path):
 
     yhat = model.predict(audio_slices)
     yhat = [0 if prediction < 1 else 1 for prediction in yhat]
-    yhat = [1 if sum(yhat) >= 1 else 0][0]
+    if yhat.count(1) > 1:
+        yhat = 0
+    else:
+        yhat = text_recognition(file_path)
 
     return CLASSES[yhat], STATUS[yhat]

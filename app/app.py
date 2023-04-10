@@ -28,7 +28,6 @@ def update_row(develop=True):
         db.commit()
         return
 
-    # print(f"before: {tb_result}")
     id_row = tb_result.get('id')
 
     #  run recognition
