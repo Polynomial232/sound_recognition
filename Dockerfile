@@ -1,7 +1,9 @@
 FROM python:3.8.10
 
-ADD app/ app/
+COPY app/ app/
+COPY requirements.txt .
+COPY .env .
 
-RUN pip install -r requirement.txt
+RUN pip install -r requirements.txt
 
 CMD ["python", "./app/app.py"]
