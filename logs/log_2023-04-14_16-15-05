@@ -1,0 +1,6 @@
+2023-04-14 16:15:10.035184	 GET Status: 200, id: 70
+2023-04-14 16:15:39.372562	 Status: 100, Deskripsi: valid-online, Time Process: 29.34s
+2023-04-14 16:15:39.579240	 PUT Status: 200
+2023-04-14 16:15:43.200879	 GET Status: 200, id: 72
+2023-04-14 16:16:26.404432	 Status: 200, Deskripsi: invalid, Time Process: 43.2s
+2023-04-14 16:16:27.049107	 PUT Status: 200

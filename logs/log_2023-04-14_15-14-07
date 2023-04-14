@@ -1,0 +1,10 @@
+2023-04-14 15:17:26.456245	 GET Status: 200, id: 67
+2023-04-14 15:17:31.340220	 Status: 100, Deskripsi: valid, Time Process: 4.88s
+2023-04-14 15:17:31.512607	 PUT Status: 200
+2023-04-14 15:18:04.293643	 GET Status: 200, id: 69
+2023-04-14 15:18:08.013422	 Status: 100, Deskripsi: valid, Time Process: 3.72s
+2023-04-14 15:18:08.198917	 PUT Status: 200
+2023-04-14 15:18:10.384556	 GET Status: 200, id: 68
+2023-04-14 15:18:14.227179	 Status: 100, Deskripsi: valid, Time Process: 3.84s
+2023-04-14 15:18:14.420240	 PUT Status: 200
+2023-04-14 15:18:51.577418	 GET Status: 200, id: 59

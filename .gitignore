@@ -1,4 +1,3 @@
 env/
 __pycache__/
-ringing_1680676815.3388605.h5
-TextClassification/env/
+ringing_detection/model/
