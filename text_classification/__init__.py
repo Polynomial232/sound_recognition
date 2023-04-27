@@ -6,8 +6,6 @@ import os
 from text_classification.classes.PredictResponse import PredictResponse
 from text_classification.transcribe_audio import transcribe_audio
 
-CLASSES = ['valid', 'invalid', 'valid-online', 'unknown', 'pulsa']
-
 def response(text):
     """
         docstring
