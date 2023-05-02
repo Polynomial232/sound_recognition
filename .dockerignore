@@ -1,0 +1,9 @@
+env/
+__pycache__/
+ringing_detection/model/
+audio/*
+!audio/.gitkeep 
+logs/*
+!logs/.gitkeep 
+temp
+.DS_Store

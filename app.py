@@ -68,32 +68,37 @@ def main():
         Fungsi main untuk melakukan GET dan PUT dengan hasil aduio apakah terdapat ringing atau tidak dan termasuk dalam kelas valid atau invalid
     """
 
-    # GET API URL
-    get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
-    result_get = requests.get(get_url)
+    try:
+        # GET API URL
+        get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
+        result_get = requests.get(get_url)
 
-    if result_get.status_code >= 300:
-        # jika status code GET tidak 200
+        if result_get.status_code >= 300:
+            # jika status code GET tidak 200
+            # log file
+            # print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
+            return
+
+        result_json = result_get.json()
+        audio_url, msisdn, result_id, device_code = result_json.get('path'), result_json.get('msisdn'), result_json.get('id'), result_json.get('deviceCode')
+
         # log file
-        # print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
-        return
+        print(f"{datetime.now()}\t GET Status: {result_get.status_code}, id: {result_id}")
 
-    result_json = result_get.json()
-    audio_url, msisdn, result_id, device_code = result_json.get('path'), result_json.get('msisdn'), result_json.get('id'), result_json.get('deviceCode')
+        # filename untuk file audio
+        filename = msisdn + "_" + str(time.time()) + '.wav'
+        # download file dari URL yang didapat dari API
+        file_path = file_downloader(audio_url, filename)
+        file_path = samplerate_conv(file_path)
 
-    # log file
-    print(f"{datetime.now()}\t GET Status: {result_get.status_code}, id: {result_id}")
-
-    # filename untuk file audio
-    filename = msisdn + "_" + str(time.time()) + '.wav'
-    # download file dari URL yang didapat dari API
-    file_path = file_downloader(audio_url, filename)
-    file_path = samplerate_conv(file_path)
-
-    # cek validasi audio
-    valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
-    if not valid:
-        return
+        # cek validasi audio
+        valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
+        if not valid:
+            return
+    except:
+        # audio gagal diproses
+        # log file
+        print(f"{datetime.now()}\tConnection / Internet Error")
 
     try:
         # coba proses audio
@@ -111,7 +116,7 @@ def main():
 
         # log file
         print(f"{datetime.now()}\t PUT Status: {status_code}")
-    except NameError:
+    except:
         # audio gagal diproses
         # log file
         print(f"{datetime.now()} [Error]")

@@ -65,6 +65,9 @@ def ringing_recognition(file_path):
     if yhat.count(1) > 1:
         classes = 'valid'
         status = 100
+    elif yhat.count(1) == 1:
+        classes = 'valid-online'
+        status = 100
     else:
         classes, status = get_class(file_path)
 
