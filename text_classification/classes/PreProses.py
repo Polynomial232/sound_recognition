@@ -8,7 +8,7 @@ import numpy as np
 import nltk
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-#nltk.download('punkt')
+# nltk.download('punkt')
 
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()

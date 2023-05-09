@@ -95,10 +95,14 @@ def main():
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
         if not valid:
             return
-    except:
+    except Exception as e:
         # audio gagal diproses
         # log file
-        print(f"{datetime.now()}\tConnection / Internet Error")
+        print(f"{datetime.now()}\t[Error]")
+        print(e)
+        print(get_url)
+        print(audio_url)
+        return
 
     try:
         # coba proses audio
@@ -116,10 +120,11 @@ def main():
 
         # log file
         print(f"{datetime.now()}\t PUT Status: {status_code}")
-    except:
+    except Exception as e:
         # audio gagal diproses
         # log file
-        print(f"{datetime.now()} [Error]")
+        print(f"{datetime.now()}\t[Error]")
+        print(e)
         print(f"{result_id}, {audio_url}, {msisdn}")
         print(audio_metadata.load(f"audio/{filename}"))
 

@@ -8,8 +8,6 @@ import tensorflow as tf
 import tensorflow_io as tfio
 from text_classification import get_class
 
-CLASSES = ['valid', 'invalid', 'valid-online', 'unknown', 'pulsa']
-STATUS = [100, 200, 100, 3, 3]
 LENGTH = 48000
 FRAME_LENGTH = 80
 FRAME_STEP = 32
@@ -61,7 +59,7 @@ def ringing_recognition(file_path):
     audio_slices = audio_slices.batch(64)
 
     yhat = model.predict(audio_slices)
-    yhat = [0 if prediction < 1 else 1 for prediction in yhat]
+    yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
     if yhat.count(1) > 1:
         classes = 'valid'
         status = 100
