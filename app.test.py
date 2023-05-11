@@ -12,10 +12,10 @@ import audio_metadata
 from decouple import config
 from mutagen.wave import WAVE
 from ringing_detection import ringing_recognition
-from file_downloader import file_downloader
-from samplerate_conv import samplerate_conv
+from functions.file_downloader import file_downloader
+from functions.samplerate_conv import samplerate_conv
 from text_classification import transcribe_audio
-
+import random
 
 COOLDOWN = int(config("COOLDOWN"))
 IP_API = config("IP_API")
@@ -37,7 +37,8 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
 
     if audio_info.length < 1:
         # cek durasi
-        classes = "durasi 0 detik"
+        classes = "invalid (durasi 0 detik)"
+        status = 200
     elif audio_info.channels != 1:
         # cek channels
         classes = "channels tidak 1"
@@ -52,12 +53,12 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
 
     # audio tidak valid
     # update data menggunakan PUT API
-    update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
-    status_code = requests.put(update_url).status_code
+    # update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
+    # status_code = requests.put(update_url).status_code
 
     # log file
     print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}")
-    print(f"{datetime.now()}\t PUT Status: {status_code}")
+    # print(f"{datetime.now()}\t PUT Status: {status_code}")
 
     return False
 
@@ -68,7 +69,8 @@ def main():
 
     try:
         # GET API URL
-        file_path = "audio/v.wav"
+        # file_path = "audio/" + random.choice([file for file in os.listdir("audio") if file.endswith('wav')])
+        file_path = "62855253253231_1683799983.3907387.wav"
         # get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
         # result_get = requests.get(get_url)
 
@@ -108,7 +110,9 @@ def main():
         # coba proses audio
         strt_process = time.perf_counter()
         # cek file audio ada ringing atau tidak
-        classes, status = ringing_recognition(file_path)
+        provider = random.choice(['ISAT', 'AXIS'])
+        classes, status = ringing_recognition(file_path, provider)
+
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
         # log file
@@ -117,10 +121,11 @@ def main():
         # update data menggunakan PUT API
         # update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
         # status_code = requests.put(update_url).status_code
-        print(status, classes)
+        print(file_path, status, classes, provider)
 
         # log file
         # print(f"{datetime.now()}\t PUT Status: {status_code}")
+        os.remove(file_path)
     except Exception as e:
         # audio gagal diproses
         # log file
@@ -129,10 +134,10 @@ def main():
         # print(f"{result_id}, {audio_url}, {msisdn}")
         # print(audio_metadata.load(f"audio/{filename}"))
 
-main()
 # reset = True
 # AUDIO_PATH = "audiob"
-# while True:
+while True:
+    main()
 #     if reset:
 #         start = time.perf_counter()
 #         reset = False

@@ -7,11 +7,15 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import tensorflow_io as tfio
 from text_classification import get_class
+from functions.decision import check_decision
 
+import pathlib
+
+PATH = pathlib.Path(__file__).parent.resolve()
 LENGTH = 48000
 FRAME_LENGTH = 80
 FRAME_STEP = 32
-MODEL_PATH = 'ringing_detection/model/ringing_1680688942.8656914.h5'
+MODEL_PATH = f'{PATH}/model/ringing_1680688942.8656914.h5'
 
 model = tf.keras.models.load_model(MODEL_PATH)
 
@@ -43,7 +47,7 @@ def preprocess_predict(sample, _):
 
     return spectrogram
 
-def ringing_recognition(file_path):
+def ringing_recognition(file_path, provider):
     """
         docstring
     """
@@ -60,13 +64,19 @@ def ringing_recognition(file_path):
 
     yhat = model.predict(audio_slices)
     yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
+    
+    classes, status = get_class(file_path)
+    
+    if status == -1:
+        classes, status = check_decision(classes, provider)
+        
+        return classes, status
+
     if yhat.count(1) > 1:
         classes = 'valid'
         status = 100
     elif yhat.count(1) == 1:
         classes = 'valid-online'
         status = 100
-    else:
-        classes, status = get_class(file_path)
 
     return classes, status

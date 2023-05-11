@@ -1,0 +1,12 @@
+{
+    "khusus-isat": {
+        "isat": {
+            "tag": "invalid",
+            "status": 200
+        },
+        "other": {
+            "tag": "valid-online",
+            "status": 100
+        }
+    }
+}

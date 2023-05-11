@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 from text_classification.classes.PreProses import PreProses
 from text_classification.classes.ChatDataset import ChatDataset
 from text_classification.classes.NeuralNet import NeuralNet
+import pathlib
 
+PATH = pathlib.Path(__file__).parent.resolve()
 
 class Train():
     """
@@ -23,6 +25,7 @@ class Train():
     def __init__(self, epochs=1000):
         self.epochs = epochs
         self.data = None
+        self.save_path = f"{PATH}/../model"
 
     def start(self):
         """
@@ -82,7 +85,7 @@ class Train():
             "updated_at": time.time()
         }
 
-        file = f'text_classification/model/data.pth'
+        file = f'{self.save_path}/data.pth'
         torch.save(self.data, file)
 
         return self.data
@@ -95,12 +98,11 @@ class Train():
         data = {
             "last_loss": self.data.get('history')[:1][0],
             "min_loss": min(self.data.get('history')),
-            "image_history": f'text_classification/model/histroy_train.jpg',
+            "image_history": f'{self.save_path}/histroy_train.jpg',
             "updated_at": self.data.get('updated_at')
         }
 
-        with open(f'text_classification/model/current.json',
-                  'w', encoding='utf-8') as file:
+        with open(f'{self.save_path}/current.json', 'w', encoding='utf-8') as file:
             json.dump(data, file,
                       indent=4,
                       separators=(',', ': '))
@@ -118,4 +120,4 @@ class Train():
         ax1.plot(loss, label='loss')
         ax1.legend(loc='lower right')
         plt.savefig(
-            f'text_classification/model/histroy_train.jpg')
+            f'{self.save_path}/histroy_train.jpg')

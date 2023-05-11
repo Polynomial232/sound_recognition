@@ -34,6 +34,6 @@ def get_class(file_path):
     text = transcribe_audio(file_path, filename)
     tag = response(text)
     os.remove(f'{filename}.txt')
-    tag_detail = predict_response.get_by_tag(tag)
+    result = predict_response.get_by_tag(tag)
 
-    return tag_detail.get('tag'), tag_detail.get('status')
+    return result.get('tag'), result.get('status')

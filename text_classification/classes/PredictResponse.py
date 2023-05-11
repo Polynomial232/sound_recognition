@@ -6,16 +6,19 @@
 import torch
 from text_classification.classes.NeuralNet import NeuralNet
 from text_classification.classes.PreProses import PreProses
+import pathlib
+
+PATH = pathlib.Path(__file__).parent.resolve()
 
 class PredictResponse:
     """
         kelas PredictResponse
     """
 
-    def __init__(self, ):
+    def __init__(self):
         self.device = torch.device(
             'cuda' if torch.cuda.is_available() else 'cpu')
-        self.dir = f'text_classification/model'
+        self.dir = f'{PATH}/../model'
         self.model_path = f'{self.dir}/data.pth'
         self.pre_proses = PreProses()
 

@@ -1,0 +1,14 @@
+{
+    "detik": {
+        "tag": "invalid (durasi 0 detik)",
+        "status": 200
+    },
+    "channels": {
+        "tag": "channels tidak 1",
+        "status": 3
+    },
+    "sample_rate": {
+        "tag": "sample rate tidak 48.000 Hz",
+        "status": 3
+    }
+}
