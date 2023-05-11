@@ -1,11 +1,10 @@
 env/
 __pycache__/
 **/__pycache__
-ringing_detection/model/
+ringing_detection/model/*
 audio/*
-!audio/.gitkeep 
 logs/*
-!logs/.gitkeep 
 temp
-.DS_Store
+**/.DS_Store
 .env
+!**/.gitkeep 
