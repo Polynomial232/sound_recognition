@@ -10,9 +10,9 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
-from classes.PreProses import PreProses
-from classes.ChatDataset import ChatDataset
-from classes.NeuralNet import NeuralNet
+from text_classification.classes.PreProses import PreProses
+from text_classification.classes.ChatDataset import ChatDataset
+from text_classification.classes.NeuralNet import NeuralNet
 
 
 class Train():
@@ -82,7 +82,7 @@ class Train():
             "updated_at": time.time()
         }
 
-        file = f'model/data.pth'
+        file = f'text_classification/model/data.pth'
         torch.save(self.data, file)
 
         return self.data
@@ -95,11 +95,11 @@ class Train():
         data = {
             "last_loss": self.data.get('history')[:1][0],
             "min_loss": min(self.data.get('history')),
-            "image_history": f'model/histroy_train.jpg',
+            "image_history": f'text_classification/model/histroy_train.jpg',
             "updated_at": self.data.get('updated_at')
         }
 
-        with open(f'model/current.json',
+        with open(f'text_classification/model/current.json',
                   'w', encoding='utf-8') as file:
             json.dump(data, file,
                       indent=4,
@@ -118,4 +118,4 @@ class Train():
         ax1.plot(loss, label='loss')
         ax1.legend(loc='lower right')
         plt.savefig(
-            f'model//histroy_train.jpg')
+            f'text_classification/model/histroy_train.jpg')

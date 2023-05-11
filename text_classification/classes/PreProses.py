@@ -8,7 +8,7 @@ import numpy as np
 import nltk
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-nltk.download('punkt')
+# nltk.download('punkt')
 
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
@@ -21,7 +21,7 @@ class PreProses():
 
     def __init__(self):
 
-        with open(f'model/intents.json',
+        with open(f'text_classification/model/intents.json',
                   'r', encoding='utf-8') as file:
             intents = json.loads(file.read())
         self.intents = intents

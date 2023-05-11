@@ -4,9 +4,8 @@
 """
 
 import torch
-from classes.NeuralNet import NeuralNet
-from classes.PreProses import PreProses
-
+from text_classification.classes.NeuralNet import NeuralNet
+from text_classification.classes.PreProses import PreProses
 
 class PredictResponse:
     """
@@ -16,8 +15,7 @@ class PredictResponse:
     def __init__(self, ):
         self.device = torch.device(
             'cuda' if torch.cuda.is_available() else 'cpu')
-        # self.device = torch.device('cpu')
-        self.dir = f'model'
+        self.dir = f'text_classification/model'
         self.model_path = f'{self.dir}/data.pth'
         self.pre_proses = PreProses()
 
@@ -26,7 +24,6 @@ class PredictResponse:
             mendapatkan data model 
         """
 
-        # return torch.load(self.model_path)
         return torch.load(self.model_path, map_location=torch.device('cpu'))
 
     def predict(self, sentence):
@@ -69,7 +66,6 @@ class PredictResponse:
         """
 
         tag = predict[0]
-        prob = predict[1]
 
         return self.get_by_tag(tag)
 

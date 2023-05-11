@@ -2,20 +2,18 @@
     docstring
 """
 import os
-import tensorflow as tf
-import tensorflow_io as tfio
-import os
-from text_recognition import text_recognition
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-CLASSES = ['valid', 'invalid', 'valid-online']
-STATUS = [1, 2, 3]
-LENGTH = 48_000
+import tensorflow as tf
+import tensorflow_io as tfio
+from text_classification import get_class
+
+LENGTH = 48000
 FRAME_LENGTH = 80
 FRAME_STEP = 32
+MODEL_PATH = 'ringing_detection/model/ringing_1680688942.8656914.h5'
 
-model = tf.keras.models.load_model('ringing_1680676815.3388605.h5')
+model = tf.keras.models.load_model(MODEL_PATH)
 
 def load_wav_16k_mono(filename):
     """
@@ -24,13 +22,14 @@ def load_wav_16k_mono(filename):
 
     file_contents = tf.io.read_file(filename)
     wav, sample_rate = tf.audio.decode_wav(file_contents, desired_channels=1)
+    # wav, sample_rate = tf.audio.decode_wav(file_contents, desired_channels=1)
     wav = tf.squeeze(wav, axis=-1)
     sample_rate = tf.cast(sample_rate, dtype=tf.int64)
     wav = tfio.audio.resample(wav, rate_in=sample_rate, rate_out=16000)
 
     return wav
 
-def preprocess_predict(sample, index):
+def preprocess_predict(sample, _):
     """
         docstring
     """
@@ -44,7 +43,7 @@ def preprocess_predict(sample, index):
 
     return spectrogram
 
-def recognition(file_path):
+def ringing_recognition(file_path):
     """
         docstring
     """
@@ -52,20 +51,22 @@ def recognition(file_path):
     wav = load_wav_16k_mono(file_path)
 
     audio_slices = tf.keras.preprocessing.timeseries_dataset_from_array(
-        wav,
-        wav,
+        wav, wav,
         sequence_length=LENGTH,
-        sequence_stride=LENGTH,
-        batch_size=1
+        sequence_stride=LENGTH,batch_size=1
     )
     audio_slices = audio_slices.map(preprocess_predict)
     audio_slices = audio_slices.batch(64)
 
     yhat = model.predict(audio_slices)
-    yhat = [0 if prediction < 1 else 1 for prediction in yhat]
+    yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
     if yhat.count(1) > 1:
-        yhat = 0
+        classes = 'valid'
+        status = 100
+    elif yhat.count(1) == 1:
+        classes = 'valid-online'
+        status = 100
     else:
-        yhat = text_recognition(file_path)
+        classes, status = get_class(file_path)
 
-    return CLASSES[yhat], STATUS[yhat]
+    return classes, status
