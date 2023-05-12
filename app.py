@@ -5,6 +5,7 @@
 
 import time
 import os
+import json
 from datetime import datetime
 import shutil
 import requests
@@ -13,13 +14,14 @@ from decouple import config
 from mutagen.wave import WAVE
 
 from ringing_detection import ringing_recognition
-from file_downloader import file_downloader
-from samplerate_conv import samplerate_conv
+from functions.file_downloader import file_downloader
+from functions.samplerate_conv import samplerate_conv
 
 COOLDOWN = int(config("COOLDOWN"))
 IP_API = config("IP_API")
 PORT_API = config("PORT_API")
 PC_CODE = config("PC_CODE")
+TIME_DELETE = config("TIME_DELETE")
 
 AUDIO_PATH = "audio"
 RESET = True
@@ -32,22 +34,24 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
         sample rate 48_000 Hz
     """
 
-    classes = ""
-    status = 3
+    with open('json/audio_info_status.json', 'r', encoding='utf-8') as file:
+        audio_info_status = json.loads(file.read())
+
+    classes = None
 
     audio_info = WAVE(file_path).info
 
     if audio_info.length < 1:
         # cek durasi
-        classes = "durasi 0 detik"
+        classes, status = audio_info_status.get("detik").values()
     elif audio_info.channels != 1:
         # cek channels
-        classes = "channels tidak 1"
+        classes, status = audio_info_status.get("channels").values()
     elif audio_info.sample_rate != 48_000:
         # cek sample rate
-        classes = "sample rate tidak 48.000 Hz"
+        classes, status = audio_info_status.get("sample_rate").values()
 
-    if classes == "":
+    if classes is None:
         # jika classes kosong atau tidak melakukan update
         # audio valid
         return True
@@ -80,7 +84,7 @@ def main():
             return
 
         result_json = result_get.json()
-        audio_url, msisdn, result_id, device_code = result_json.get('path'), result_json.get('msisdn'), result_json.get('id'), result_json.get('deviceCode')
+        audio_url, msisdn, result_id, device_code, provider = result_json.get('path'), result_json.get('msisdn'), result_json.get('id'), result_json.get('deviceCode'), result_json.get('prefix')
 
         # log file
         print(f"{datetime.now()}\t GET Status: {result_get.status_code}, id: {result_id}")
@@ -100,15 +104,14 @@ def main():
         # log file
         print(f"{datetime.now()}\t[Error]")
         print(e)
-        print(get_url)
-        print(audio_url)
         return
 
     try:
         # coba proses audio
         strt_process = time.perf_counter()
         # cek file audio ada ringing atau tidak
-        classes, status = ringing_recognition(file_path)
+        classes, status = ringing_recognition(file_path, provider)
+
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
         # log file
@@ -120,6 +123,11 @@ def main():
 
         # log file
         print(f"{datetime.now()}\t PUT Status: {status_code}")
+
+        os.remove(file_path)
+        with open('logs.csv', 'a', encoding='utf-8') as logs_file:
+            logs_file.write(f'{device_code},{msisdn},{provider},{status},{classes},{ttl_process}\n')
+
     except Exception as e:
         # audio gagal diproses
         # log file
@@ -127,6 +135,7 @@ def main():
         print(e)
         print(f"{result_id}, {audio_url}, {msisdn}")
         print(audio_metadata.load(f"audio/{filename}"))
+
 
 while True:
     # perulangan terus menerus
@@ -139,7 +148,7 @@ while True:
     # Cooldown untuk memproses ulang audio
     time.sleep(COOLDOWN)
 
-    if (time.perf_counter() - start) >= 3600:
+    if (time.perf_counter() - start) >= int(TIME_DELETE):
         # jika waktu proses sudah lebih sama dengan 3600 detik atau 1 jam
         # maka seluruh file di folder audio akan dihapus
         shutil.rmtree(AUDIO_PATH)
