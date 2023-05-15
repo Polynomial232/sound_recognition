@@ -83,12 +83,17 @@ def main():
         file_path = samplerate_conv(file_path)
 
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
+
+        delete_url = audio_url.replace('download', 'delete')
+        result_delete = requests.get(delete_url)
+        print(result_delete)
         if not valid:
             return
     except Exception as e:
         print(f"{datetime.now()}\t[Error]")
         print(e)
-        print(audio_url)
+        if result_get.status_code <= 300:
+            print(audio_url)
         return
 
     try:
