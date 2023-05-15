@@ -5,12 +5,14 @@
 import os
 from text_classification.classes.PredictResponse import PredictResponse
 from text_classification.transcribe_audio import transcribe_audio
+from functions.update_model import update_model
 
 def response(text):
     """
         docstring
     """
 
+    update_model()
     predict_response = PredictResponse()
     predict = predict_response.predict(text)
 
@@ -28,8 +30,8 @@ def get_class(file_path):
     """
 
     predict_response = PredictResponse()
-    filename = file_path.split('/')[-1][:-4]
-    # filename = file_path.split('\\')[-1][:-4] # windows
+    # filename = file_path.split('/')[-1][:-4]
+    filename = file_path.split('\\')[-1][:-4] # windows
 
     text = transcribe_audio(file_path, filename)
     tag = response(text)
