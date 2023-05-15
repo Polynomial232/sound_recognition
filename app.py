@@ -14,7 +14,7 @@ from decouple import config
 from mutagen.wave import WAVE
 
 from ringing_detection import ringing_recognition
-from functions.file_downloader import file_downloader
+from functions.file_downloader import audio_downloader
 from functions.samplerate_conv import samplerate_conv
 
 COOLDOWN = int(config("COOLDOWN"))
@@ -71,6 +71,7 @@ def main():
     """
         Fungsi main untuk melakukan GET dan PUT dengan hasil aduio apakah terdapat ringing atau tidak dan termasuk dalam kelas valid atau invalid
     """
+    # pylint: disable=too-many-locals, broad-except, invalid-name
 
     try:
         # GET API URL
@@ -92,7 +93,7 @@ def main():
         # filename untuk file audio
         filename = msisdn + "_" + str(time.time()) + '.wav'
         # download file dari URL yang didapat dari API
-        file_path = file_downloader(audio_url, filename)
+        file_path = audio_downloader(audio_url, filename)
         file_path = samplerate_conv(file_path)
 
         # cek validasi audio

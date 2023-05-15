@@ -1,2 +1,2 @@
 source venv/bin/activate
-python3.8 functions/train.py
+python3.8 train.py

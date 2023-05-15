@@ -9,5 +9,5 @@ def unzip(path):
         docstring
     """
 
-    with ZipFile(path, 'r') as zObject:
-        zObject.extractall('audio')
+    with ZipFile(path, 'r') as z_object:
+        z_object.extractall('audio')
