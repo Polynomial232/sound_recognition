@@ -30,8 +30,9 @@ def get_class(file_path):
     """
 
     predict_response = PredictResponse()
-    # filename = file_path.split('/')[-1][:-4]
-    filename = file_path.split('\\')[-1][:-4] # windows
+    file_path = file_path.replace('\\', '/')
+    filename = file_path.split('/')[-1][:-4]
+    # filename = file_path.split('\\')[-1][:-4] # windows
 
     text = transcribe_audio(file_path, filename)
     tag = response(text)

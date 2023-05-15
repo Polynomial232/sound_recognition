@@ -18,26 +18,27 @@ if [[ $1 == "start" ]]; then
  if [[ $status == "" ]]; then
   start
  else
-  echo "Aplikasi Sedang Berjalan! Detail: $status"
+  echo "Engine Sedang Berjalan! Detail: $status"
  fi
 elif [[ $1 == "status" ]]; then
  if [[ $status == "" ]]; then
-  echo "Aplikasi tidak sedang berjalan"
+  echo "Engine tidak sedang berjalan"
  else
-  echo "Background Detail Aplikasi: $status"
+  echo "Background Detail Engine: $status"
  fi
 elif [[ $1 == "kill" ]]; then
  if [[ $status == "" ]]; then
-  echo "Tidak Ada Aplikasi Yang Berjalan"
+  echo "Tidak Ada Engine Yang Berjalan"
  else
   kill_process
  fi
 elif [[ $1 == "logs" ]]; then
  current_logs=$(cat "logs/current_log")
  tail -f $current_logs
-elif [[ $1 == "restart" ]] then
+elif [[ $1 == "restart" ]]; then
  kill_process
  start
+ echo "Engine direstart"
 else
  echo "Parameter list: start, status, kill, logs"
 fi

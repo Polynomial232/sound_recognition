@@ -18,5 +18,4 @@ def transcribe_audio(path, filename):
     with open(f'{filename}.txt', 'r', encoding='utf-8') as file:
         text = file.read().splitlines() + text
 
-
     return "".join(text)

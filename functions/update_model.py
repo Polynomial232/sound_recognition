@@ -12,6 +12,6 @@ def update_model():
     if updated_at != str(updated_at_github.json()):
         model_downloader('https://raw.githubusercontent.com/Polynomial232/Ringing-Recognition/dev/text_classification/model/intents.json', 'intents.json')
         model_downloader('https://raw.githubusercontent.com/Polynomial232/Ringing-Recognition/dev/text_classification/model/data.pth', 'data.pth')
-        print(f'{datetime.now()}\tmodel update done')
+        print(f'{datetime.now()}\t model update done')
     else:
-        print(f'{datetime.now()}\tmodel is already in the updated')
+        print(f'{datetime.now()}\t model is already in the updated')
