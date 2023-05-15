@@ -7,4 +7,5 @@ logs/*
 temp
 **/.DS_Store
 .env
-!**/.gitkeep 
+!**/.gitkeep
+install/nltk_data/tokenizers/*
