@@ -11,7 +11,7 @@ def check_decision(status, provider):
 
     provider = provider.lower()
 
-    with open(f'json/decision.json', 'r', encoding='utf-8') as file:
+    with open('json/decision.json', 'r', encoding='utf-8') as file:
         decision = json.loads(file.read())
 
     result = decision.get(status).get(provider)
