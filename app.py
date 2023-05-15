@@ -78,7 +78,8 @@ def main():
 
         print(f"{datetime.now()}\t GET Status: {result_get.status_code}, id: {result_id}")
 
-        filename = msisdn + "_" + str(time.time()) + '.wav'
+        # filename = msisdn + "_" + str(time.time()) + '.wav'
+        filename = audio_url.split('download?name=')[1]
         file_path = audio_downloader(audio_url, filename)
         file_path = samplerate_conv(file_path)
         delete_url = audio_url.replace('download', 'delete')
