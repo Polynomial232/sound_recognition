@@ -1,4 +1,4 @@
-from text_classification import transcribe_audio
+from text_classification.transcribe_audio import transcribe_audio
 import os
 import random
 
@@ -11,5 +11,5 @@ def main(filepath, filename):
     print(text)
 
 while True:
-    filename = 'valid(2)'
-    main(os.path.join('test', f'{filename}.wav'), filename)
+    filename = 'a3'
+    main(f'{filename}.wav', filename)
