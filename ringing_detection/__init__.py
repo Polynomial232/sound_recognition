@@ -2,6 +2,7 @@
     docstring
 """
 import os
+import time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import tensorflow as tf
@@ -62,8 +63,10 @@ def ringing_recognition(file_path, provider):
     audio_slices = audio_slices.map(preprocess_predict)
     audio_slices = audio_slices.batch(64)
 
+    strt = time.perf_counter()
     yhat = model.predict(audio_slices)
     yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
+    print("predict time: ", time.perf_counter() - strt)
     
     classes, status = get_class(file_path)
     

@@ -85,7 +85,6 @@ def main():
 
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
 
-
         if not valid:
             return
     except Exception as e:
@@ -102,10 +101,6 @@ def main():
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
         print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}, Time Process: {ttl_process}")
-
-        if status != 3:
-            delete_url = audio_url.replace('download', 'delete')
-            _ = requests.get(delete_url)
 
         update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
         status_code = requests.put(update_url).status_code

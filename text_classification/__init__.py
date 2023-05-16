@@ -3,6 +3,7 @@
 """
 
 import os
+import time
 from text_classification.classes.PredictResponse import PredictResponse
 from text_classification.transcribe_audio import transcribe_audio
 from functions.update_model import update_model
@@ -35,8 +36,11 @@ def get_class(file_path):
     # filename = file_path.split('\\')[-1][:-4] # windows
 
     text = transcribe_audio(file_path, filename)
+
+    strt = time.perf_counter()
     tag = response(text)
     os.remove(f'{filename}.txt')
     result = predict_response.get_by_tag(tag)
+    print("predict_class: ", time.perf_counter() - strt)
 
     return result.get('tag'), result.get('status')

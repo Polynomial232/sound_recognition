@@ -70,7 +70,7 @@ def main():
     try:
         # GET API URL
         # file_path = "audio/" + random.choice([file for file in os.listdir("audio") if file.endswith('wav')])
-        file_path = "test/valid(2).wav"
+        file_path = "i.wav"
         # get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
         # result_get = requests.get(get_url)
 
