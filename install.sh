@@ -1,3 +1,4 @@
+#!/bin/sh
 chmod 777 resetpm2.sh
 ./resetpm2.sh
 sudo apt update && sudo apt upgrade -y
