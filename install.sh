@@ -10,7 +10,6 @@ echo '    PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 echo 'fi' >> ~/.bashrc
 source ~/.bashrc
 sudo apt install python3.8-venv
-cd sound_recognition
 cp -R install/nltk_data /home/app/
 python3.8 -m venv venv
 source venv/bin/activate
