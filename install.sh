@@ -3,7 +3,6 @@ chmod 777 resetpm2.sh
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install p7zip p7zip-full
 7za x /home/app/sound_recognition.7z -o/home/app/sound_recognition_model
-git clone https://github.com/Polynomial232/sound_recognition.git
 cp /home/app/sound_recognition_model/ringing_detection/model/ringing_1680688942.8656914.h5 /home/app/sound_recognition/ringing_detection/model/ringing_1680688942.8656914.h5
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:deadsnakes/ppa -y
