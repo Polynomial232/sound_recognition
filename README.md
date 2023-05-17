@@ -72,6 +72,11 @@ Install Python Virtual Enviroment
 sudo apt install python3.8-venv
 ```
 
+Masuk directory sound_recognition
+```bash
+cd sound_recognition
+```
+
 Buat Virtual Enviroment Python3.8
 ```bash
 python3.8 -m venv venv
