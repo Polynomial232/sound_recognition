@@ -87,14 +87,14 @@ Aktifkan Virutal Enviroment
 source venv/bin/activate
 ```
 
-Install Package Python
-```bash
-pip install -r requirements.txt
-```
-
 Copy direktori nltk_data
 ```bash
 cp -R install/nltk_data /home/app/
+```
+
+Install Package Python
+```bash
+pip install -r requirements.txt
 ```
 ## Menjalakan Program
 
