@@ -71,7 +71,7 @@ def main():
         result_get = requests.get(get_url)
 
         if result_get.status_code >= 300:
-            # print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
+            print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
             return
 
         result_json = result_get.json()

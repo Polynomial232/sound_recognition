@@ -66,12 +66,14 @@ def ringing_recognition(file_path, provider):
     yhat = model.predict(audio_slices)
     yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
     
-    
-    classes, status = get_class(file_path)
-    if status == -1:
-        classes, status = check_decision(classes, provider)
-        
-        return classes, status
+    print(provider)
+
+    if provider.lower() == 'isat':
+        classes, status = get_class(file_path)
+        if status == -1:
+            classes, status = check_decision(classes, provider)
+            
+            return classes, status
 
     if yhat.count(1) > 1:
         classes = 'valid'
@@ -79,5 +81,7 @@ def ringing_recognition(file_path, provider):
     elif yhat.count(1) == 1:
         classes = 'valid-online'
         status = 100
+    else:
+        classes, status = get_class(file_path)
 
     return classes, status
