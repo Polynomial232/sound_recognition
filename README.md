@@ -1,32 +1,43 @@
 # Sound-Recognition
 
+## Ekstrak 7z
+
+Install 7z
+```bash
+sudo apt-get install p7zip p7zip-full
+```
+Ekstraks 7z File
+```bash
+7za x sound_recognition.7z -o./sound_recognition
+```
+
 
 ## Installasi
 
 Update Linux
 ```bash
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 ```
 ```bash
-sudo apt install software-properties-common
+sudo apt install software-properties-common -y
 ```
 ```bash
-sudo add-apt-repository ppa:deadsnakes/ppa
+sudo add-apt-repository ppa:deadsnakes/ppa -y
 ```
 
 Install ffmpeg
 ```bash
-sudo apt install ffmpeg
+sudo apt install ffmpeg -y
 ```
 
 Install Python3.8
 ```bash
-sudo apt install python3.8
+sudo apt install python3.8 -y
 ```
 
 Install pip Python
 ```bash
-sudo apt install python3-pip
+sudo apt install python3-pip -y
 ```
 
 Install pip Python3.8
@@ -88,35 +99,15 @@ source venv/bin/activate
 python3.8 app.py
 ```
 
-### Jalankan program dibackground
-Beri akses root untuk run_background.sh
+### Jalankan program menggunakan pm2
+copy file app.py menjadi app
 ```bash
-chmod 777 run_background.sh
+cp app.py app
 ```
-
-- start: Jalankan program
+jalankan menggunakan pm2
+*pastikan virutal enviroment (venv) python aktif
 ```bash
-./run_background.sh start
-```
-
-- status: Lihat status program
-```bash
-./run_background.sh status
-```
-
-- kill: Kill atau Stop program
-```bash
-./run_background.sh kill
-```
-
-- restart: Restart program
-```bash
-./run_background.sh restart
-```
-
-- logs: Logs program
-```bash
-./run_background.sh logs
+pm2 start app --interpreter venv/bin/python3.8 --name sound-recognition
 ```
 
 ## Authors
