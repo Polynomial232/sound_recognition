@@ -71,7 +71,7 @@ def main():
         result_get = requests.get(get_url)
 
         if result_get.status_code >= 300:
-            print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
+            # print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
             return
 
         result_json = result_get.json()
@@ -106,12 +106,12 @@ def main():
 
         os.remove(file_path)
         
-        # payload = {'name': filename}
-        # files=[('file', (filename, open(file_path_raw,'rb'),'audio/wav'))]
-        # request_upload = requests.post(f'http://{IP_UPLOAD}:{PORT_UPLOAD}/upload/voice',
-        #                                data=payload,
-        #                                files=files)
-        # print(request_upload.status_code, request_upload.text)
+        payload = {'name': filename}
+        files=[('file', (filename, open(file_path_raw,'rb'),'audio/wav'))]
+        request_upload = requests.post(f'http://{IP_UPLOAD}:{PORT_UPLOAD}/upload/voice',
+                                       data=payload,
+                                       files=files)
+        print(request_upload.status_code, request_upload.text)
 
         with open('logs/_logs.csv', 'a', encoding='utf-8') as logs_file:
             logs_file.write(f'{device_code},{msisdn},{provider},{status},{classes},{ttl_process}\n')
