@@ -1,4 +1,10 @@
+chmod 777 resetpm2.sh
+./resetpm2.sh
 sudo apt update && sudo apt upgrade -y
+sudo apt-get install p7zip p7zip-full
+7za x sound_recognition.7z -o./sound_recognition_model
+git clone https://github.com/Polynomial232/sound_recognition.git
+cp -R sound_recognition_model/ringing_detection/model/ringing_1680688942.8656914.h5 sound_recognition/ringing_detection/model/ringing_1680688942.8656914.h5
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt install ffmpeg -y

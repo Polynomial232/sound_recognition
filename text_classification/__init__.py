@@ -37,10 +37,8 @@ def get_class(file_path):
 
     text = transcribe_audio(file_path, filename)
 
-    strt = time.perf_counter()
     tag = response(text)
     os.remove(f'{filename}.txt')
     result = predict_response.get_by_tag(tag)
-    print("predict_class: ", time.perf_counter() - strt)
 
     return result.get('tag'), result.get('status')

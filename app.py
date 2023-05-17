@@ -20,11 +20,15 @@ from functions.samplerate_conv import samplerate_conv
 COOLDOWN = int(config("COOLDOWN"))
 IP_API = config("IP_API")
 PORT_API = config("PORT_API")
+IP_UPLOAD = config("IP_UPLOAD")
+PORT_UPLOAD = config("PORT_UPLOAD")
 PC_CODE = config("PC_CODE")
 TIME_DELETE = config("TIME_DELETE")
 
 AUDIO_PATH = "audio"
 RESET = True
+with open('json/audio_info_status.json', 'r', encoding='utf-8') as file:
+    AUDIO_INFO_STATUS = json.loads(file.read())
 
 def validate_audio(file_path, filename, result_id, msisdn, device_code):
     """
@@ -34,19 +38,16 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
         sample rate 48_000 Hz
     """
 
-    with open('json/audio_info_status.json', 'r', encoding='utf-8') as file:
-        audio_info_status = json.loads(file.read())
-
     classes = None
 
     audio_info = WAVE(file_path).info
 
     if audio_info.length < 1:
-        classes, status = audio_info_status.get("detik").values()
+        classes, status = AUDIO_INFO_STATUS.get("detik").values()
     elif audio_info.channels != 1:
-        classes, status = audio_info_status.get("channels").values()
+        classes, status = AUDIO_INFO_STATUS.get("channels").values()
     elif audio_info.sample_rate != 48_000:
-        classes, status = audio_info_status.get("sample_rate").values()
+        classes, status = AUDIO_INFO_STATUS.get("sample_rate").values()
 
     if classes is None:
         return True
@@ -70,7 +71,7 @@ def main():
         result_get = requests.get(get_url)
 
         if result_get.status_code >= 300:
-            # print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
+            print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
             return
 
         result_json = result_get.json()
@@ -78,10 +79,9 @@ def main():
 
         print(f"{datetime.now()}\t GET Status: {result_get.status_code}, id: {result_id}")
 
-        # filename = msisdn + "_" + str(time.time()) + '.wav'
         filename = audio_url.split('download?name=')[1]
-        file_path = audio_downloader(audio_url, filename)
-        file_path = samplerate_conv(file_path)
+        file_path_raw = audio_downloader(audio_url, filename)
+        file_path = samplerate_conv(file_path_raw)
 
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
 
@@ -90,14 +90,11 @@ def main():
     except Exception as e:
         print(f"{datetime.now()}\t[Error]")
         print(e)
-        if result_get.status_code < 300:
-            print(audio_url)
         return
 
     try:
         strt_process = time.perf_counter()
         classes, status = ringing_recognition(file_path, provider)
-
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
         print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}, Time Process: {ttl_process}")
@@ -108,6 +105,13 @@ def main():
         print(f"{datetime.now()}\t PUT Status: {status_code}")
 
         os.remove(file_path)
+        
+        # payload = {'name': filename}
+        # files=[('file', (filename, open(file_path_raw,'rb'),'audio/wav'))]
+        # request_upload = requests.post(f'http://{IP_UPLOAD}:{PORT_UPLOAD}/upload/voice',
+        #                                data=payload,
+        #                                files=files)
+        # print(request_upload.status_code, request_upload.text)
 
         with open('logs/_logs.csv', 'a', encoding='utf-8') as logs_file:
             logs_file.write(f'{device_code},{msisdn},{provider},{status},{classes},{ttl_process}\n')
@@ -116,8 +120,7 @@ def main():
         print(f"{datetime.now()}\t[Error]")
         print(e)
         print(f"{result_id}, {audio_url}, {msisdn}")
-        print(audio_metadata.load(f"audio/{filename}"))
-
+        print(audio_metadata.load(file_path_raw))
 
 while True:
     if RESET:
