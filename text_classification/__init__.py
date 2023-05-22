@@ -17,6 +17,7 @@ def response(text):
     predict = predict_response.predict(text)
 
     #print({round(predict[1].item(),3})
+    print(predict)
     if predict[1].item() < 0.8:
         return 'unknown'
 
