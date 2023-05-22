@@ -71,7 +71,7 @@ class Train():
                 optimizer.step()
 
             history.append(f'{loss.item():.4f}')
-            if (epoch+1) % 100 == 0:
+            if (epoch+1) % 10 == 0:
                 print(f'epoch {epoch+1}/{num_epochs}, loss={loss.item():.4f}')
 
         self.data = {

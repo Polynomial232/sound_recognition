@@ -70,7 +70,7 @@ def main():
     try:
         # GET API URL
         # file_path = "audio/" + random.choice([file for file in os.listdir("audio") if file.endswith('wav')])
-        file_path = "v.wav"
+        file_path = "tes.wav"
         # get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
         # result_get = requests.get(get_url)
 
@@ -121,7 +121,7 @@ def main():
         # update data menggunakan PUT API
         # update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
         # status_code = requests.put(update_url).status_code
-        print(file_path, status, classes, provider)
+        print(file_path, status, classes, provider, ttl_process)
 
         # log file
         # print(f"{datetime.now()}\t PUT Status: {status_code}")
