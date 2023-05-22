@@ -46,6 +46,10 @@ jalankan menggunakan pm2
 pm2 start app --interpreter venv/bin/python3.8 --name sound-recognition
 ```
 
+## Cek Log Error
+
+[googleDocs](https://docs.google.com/document/d/1cx1TzyGhWQISAM5Gd_T4sartV0rtOeu3lb-iA1DgmGQ/edit?usp=sharing)
+
 ## Authors
 
 
