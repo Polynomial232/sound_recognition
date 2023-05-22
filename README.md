@@ -30,6 +30,8 @@ contoh isi file .env
 PC_CODE=
 IP_API=
 PORT_API=
+IP_UPLOAD=
+PORT_UPLOAD=
 TIME_DELETE=
 COOLDOWN=
 ```
