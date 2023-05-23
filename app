@@ -53,10 +53,10 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
         return True
 
     update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
-    status_code = requests.put(update_url).status_code
+    result_update = requests.put(update_url)
 
     print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}")
-    print(f"{datetime.now()}\t PUT Status: {status_code}")
+    print(f"{datetime.now()}\t PUT Status: {result_update.status_code}, {result_update.content}")
 
     return False
 
@@ -68,7 +68,7 @@ def main():
 
     try:
         get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
-        result_get = requests.get(get_url)
+        result_get = requests.get(get_url, timeout=10)
 
         if result_get.status_code >= 300:
             print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
