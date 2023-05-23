@@ -12,7 +12,8 @@ def response(text):
     """
         docstring
     """
-
+    
+    update_model()
     predict_response = PredictResponse()
     predict = predict_response.predict(text)
 

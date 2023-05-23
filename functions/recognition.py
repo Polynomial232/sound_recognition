@@ -10,6 +10,6 @@ def main(filepath, filename):
 
     print(text)
 
-while True:
-    filename = 'a3'
+for i in range(10):
+    filename = 't'
     main(f'{filename}.wav', filename)
