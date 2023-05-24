@@ -76,9 +76,11 @@ def ringing_recognition(file_path, provider):
     if yhat.count(1) > 1:
         classes = 'valid'
         status = 100
+        text = "None"
     elif yhat.count(1) == 1:
         classes = 'valid-online'
         status = 100
+        text = "None"
     else:
         if provider.lower() == 'isat':
             return classes, status, text
