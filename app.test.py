@@ -62,7 +62,7 @@ def validate_audio(file_path, filename, result_id, msisdn, device_code):
 
     return False
 
-def main():
+def main(file_path):
     """
         Fungsi main untuk melakukan GET dan PUT dengan hasil aduio apakah terdapat ringing atau tidak dan termasuk dalam kelas valid atau invalid
     """
@@ -70,7 +70,6 @@ def main():
     try:
         # GET API URL
         # file_path = "audio/" + random.choice([file for file in os.listdir("audio") if file.endswith('wav')])
-        file_path = "tes.wav"
         # get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
         # result_get = requests.get(get_url)
 
@@ -136,7 +135,7 @@ def main():
 
 # reset = True
 # AUDIO_PATH = "audiob"
-main()
+main('t.wav')
 # while True:
     # main()
 #     if reset:
