@@ -42,4 +42,4 @@ def get_class(file_path):
     os.remove(f'{filename}.txt')
     result = predict_response.get_by_tag(tag)
 
-    return result.get('tag'), result.get('status')
+    return result.get('tag'), result.get('status'), text

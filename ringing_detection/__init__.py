@@ -67,11 +67,11 @@ def ringing_recognition(file_path, provider):
     yhat = [0 if prediction < 0.99 else 1 for prediction in yhat]
     
     if provider.lower() == 'isat':
-        classes, status = get_class(file_path)
+        classes, status, text = get_class(file_path)
         if status == -1:
             classes, status = check_decision(classes, provider)
             
-            return classes, status
+            return classes, status, text
 
     if yhat.count(1) > 1:
         classes = 'valid'
@@ -81,8 +81,8 @@ def ringing_recognition(file_path, provider):
         status = 100
     else:
         if provider.lower() == 'isat':
-            return classes, status
+            return classes, status, text
 
-        classes, status = get_class(file_path)
+        classes, status, text = get_class(file_path)
 
-    return classes, status
+    return classes, status, text
