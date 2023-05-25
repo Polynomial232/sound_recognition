@@ -1,7 +1,8 @@
-class Kaki:
-    def __init__(self):
-        self.panjang = '10cm'
+from text_classification.classes.PredictResponse import PredictResponse
 
-kaki = Kaki()
+text = "The number you are calling cannot be reached. Please try again later. Nomor yang anda tuju tidak dapat hubungi."
 
-print(kaki.panjang)
+predict_response = PredictResponse()
+
+predict = predict_response.predict(text)
+print(predict)
