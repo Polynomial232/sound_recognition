@@ -6,6 +6,6 @@ for folder in os.listdir('audio/dataset'):
         text = main(os.path.join('audio', 'dataset', folder, file), file[:-4])
         
         with open(f'{folder}.txt', 'a', encoding='utf-8') as classname:
-            classname.write(text)
+            classname.write(text+"\n")
         
     print(f'{folder} Done')

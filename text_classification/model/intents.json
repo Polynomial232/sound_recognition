@@ -4,19 +4,31 @@
             "id": "intents-1",
             "tag": "valid-online",
             "status": 100,
-            "patterns": []
+            "patterns": [
+                "The number that you are calling is not available at the moment. Please try to get later. Nomor yang Anda tujuh tidak dapat dihubungi. Coba lah berapa saat lagi.",
+                "your call is being forwarded. Please help the line. sedang dialikan. Silakan tunggu.",
+                "The number you are calling cannot receive an incoming calls. Nomor yang anda tuju tidak dapat menerima telefon masuk.",
+                "The number you are calling cannot be reached. Please try again later. Nomor yang under tujuh tidak dapat hubungi. Coba lah beberapa saat lagi."
+            ]
         },
         {
             "id": "intents-2",
             "tag": "invalid",
             "status": 200,
-            "patterns": []
+            "patterns": [
+                "The number you are calling does not exist. Please check the number. Nomor yang kamu tuju tidak terdaftar. Mohan periksa kembali.",
+                "Nomor yang anda hubungi tidak terdaftar",
+                "nomor yang anda tuju tidak dapat dihubungi",
+                "No more telephone, you have dialed an incorrect number, Nomor telefon yang anda putar, salah."
+            ]
         },
         {
             "id": "intents-4",
             "tag": "pulsa",
             "status": 3,
-            "patterns": []
+            "patterns": [
+                "your account has insufficient credit to make a call. anda tidak cukup untuk melakukan panggilan ini."
+            ]
         }
     ]
 }
