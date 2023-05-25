@@ -5,10 +5,10 @@
             "tag": "valid-online",
             "status": 100,
             "patterns": [
-                "The number that you are calling is not available at the moment. Please try to get later. Nomor yang Anda tujuh tidak dapat dihubungi. Coba lah berapa saat lagi.",
-                "your call is being forwarded. Please help the line. sedang dialikan. Silakan tunggu.",
+                "The number that you are calling is not available at the moment. Please try to get later. Nomor yang Anda tuju tidak dapat dihubungi. Coba lah berapa saat lagi.",
+                "your call is being forwarded. Please help the line. panggilanmu sedang dialikan. Silakan tunggu.",
                 "The number you are calling cannot receive an incoming calls. Nomor yang anda tuju tidak dapat menerima telefon masuk.",
-                "The number you are calling cannot be reached. Please try again later. Nomor yang under tujuh tidak dapat hubungi. Coba lah beberapa saat lagi."
+                "The number you are calling cannot be reached. Please try again later. Nomor yang anda tuju tidak dapat hubungi. Coba lah beberapa saat lagi."
             ]
         },
         {
