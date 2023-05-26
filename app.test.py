@@ -110,7 +110,7 @@ def main(file_path):
         strt_process = time.perf_counter()
         # cek file audio ada ringing atau tidak
         provider = random.choice(['ISAT', 'AXIS'])
-        classes, status = ringing_recognition(file_path, provider)
+        classes, status, text = ringing_recognition(file_path, provider)
 
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
@@ -120,7 +120,7 @@ def main(file_path):
         # update data menggunakan PUT API
         # update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
         # status_code = requests.put(update_url).status_code
-        print(file_path, status, classes, provider, ttl_process)
+        print(file_path, status, classes, provider, ttl_process, text)
 
         # log file
         # print(f"{datetime.now()}\t PUT Status: {status_code}")
