@@ -3,10 +3,8 @@
 """
 
 import os
-import time
 from text_classification.classes.PredictResponse import PredictResponse
 from text_classification.transcribe_audio import transcribe_audio
-from functions.update_model import update_model
 
 def response(text):
     """
@@ -38,6 +36,7 @@ def get_class(file_path):
     text = transcribe_audio(file_path, filename)
 
     tag = response(text)
+
     os.remove(f'{filename}.txt')
     result = predict_response.get_by_tag(tag)
 

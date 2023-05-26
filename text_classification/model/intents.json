@@ -35,6 +35,13 @@
             "patterns": [
                 "your account has insufficient credit to make a call. anda tidak cukup untuk melakukan panggilan ini."
             ]
+        },
+        
+        {
+            "id": "intents-5",
+            "tag": "unknown",
+            "status": 3,
+            "patterns": []
         }
     ]
 }
