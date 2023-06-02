@@ -5,11 +5,11 @@ import random
 def main(filepath, filename):
     text = transcribe_audio(filepath, filename)
 
-    with open('recognition.txt', 'a', encoding='utf-8') as file:
-        file.write(text+'\n')
+    # with open('recognition.txt', 'a', encoding='utf-8') as file:
+    #     file.write(text+'\n')
 
-    print(text)
+    return text
 
-for i in range(10):
-    filename = 't'
-    main(f'{filename}.wav', filename)
+# for i in range(10):
+#     filename = 't'
+#     main(f'{filename}.wav', filename)
