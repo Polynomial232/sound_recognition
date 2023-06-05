@@ -17,8 +17,7 @@ from ringing_detection import ringing_recognition
 from functions.file_downloader import audio_downloader
 from functions.samplerate_conv import samplerate_conv
 
-COOLDOWN_200 = int(config("COOLDOWN_200"))
-COOLDOWN_400 = int(config("COOLDOWN_400"))
+COOLDOWN = int(config("COOLDOWN"))
 IP_API = config("IP_API")
 PORT_API = config("PORT_API")
 IP_UPLOAD = config("IP_UPLOAD")
@@ -87,7 +86,7 @@ def main():
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
 
         if not valid:
-            return
+            return 200
     except Exception as e:
         print(f"{datetime.now()}\t[Error]")
         print(e)
@@ -115,7 +114,9 @@ def main():
         print(e)
         print(f"{result_id}, {audio_url}, {msisdn}")
         print(audio_metadata.load(file_path_raw))
-    
+
+        return 200
+
     return result_get.status_code
 
 while True:
@@ -123,8 +124,8 @@ while True:
         start = time.perf_counter()
         RESET = False
 
-    status = main()
-    cooldown = COOLDOWN_200 if status != 400 else COOLDOWN_400
+    status_code = main()
+    cooldown = COOLDOWN if status_code != 400 else 30
     time.sleep(cooldown)
 
     if (time.perf_counter() - start) >= int(TIME_DELETE):
