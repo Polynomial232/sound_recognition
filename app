@@ -17,7 +17,8 @@ from ringing_detection import ringing_recognition
 from functions.file_downloader import audio_downloader
 from functions.samplerate_conv import samplerate_conv
 
-COOLDOWN = int(config("COOLDOWN"))
+COOLDOWN_200 = int(config("COOLDOWN_200"))
+COOLDOWN_400 = int(config("COOLDOWN_400"))
 IP_API = config("IP_API")
 PORT_API = config("PORT_API")
 IP_UPLOAD = config("IP_UPLOAD")
@@ -72,7 +73,7 @@ def main():
 
         if result_get.status_code >= 300:
             print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
-            return
+            return result_get.status_code
 
         result_json = result_get.json()
         audio_url, msisdn, result_id, device_code, provider = result_json.get('path'), result_json.get('msisdn'), result_json.get('id'), result_json.get('deviceCode'), result_json.get('prefix')
@@ -90,7 +91,7 @@ def main():
     except Exception as e:
         print(f"{datetime.now()}\t[Error]")
         print(e)
-        return
+        return 400
 
     try:
         strt_process = time.perf_counter()
@@ -114,14 +115,17 @@ def main():
         print(e)
         print(f"{result_id}, {audio_url}, {msisdn}")
         print(audio_metadata.load(file_path_raw))
+    
+    return result_get.status_code
 
 while True:
     if RESET:
         start = time.perf_counter()
         RESET = False
 
-    main()
-    time.sleep(COOLDOWN)
+    status = main()
+    cooldown = COOLDOWN_200 if status != 400 else COOLDOWN_400
+    time.sleep(cooldown)
 
     if (time.perf_counter() - start) >= int(TIME_DELETE):
         shutil.rmtree(AUDIO_PATH)
