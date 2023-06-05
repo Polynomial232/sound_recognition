@@ -5,60 +5,22 @@
 
 import time
 import os
-import json
 from datetime import datetime
 import shutil
-import requests
 import audio_metadata
 from decouple import config
-from mutagen.wave import WAVE
 
 from ringing_detection import ringing_recognition
 from functions.file_downloader import audio_downloader
 from functions.samplerate_conv import samplerate_conv
+from functions.validate_audio import validate_audio
+from functions.api_action import do_put, do_get
 
 COOLDOWN = int(config("COOLDOWN"))
-IP_API = config("IP_API")
-PORT_API = config("PORT_API")
-IP_UPLOAD = config("IP_UPLOAD")
-PORT_UPLOAD = config("PORT_UPLOAD")
-PC_CODE = config("PC_CODE")
 TIME_DELETE = config("TIME_DELETE")
 
 AUDIO_PATH = "audio"
 RESET = True
-with open('json/audio_info_status.json', 'r', encoding='utf-8') as file:
-    AUDIO_INFO_STATUS = json.loads(file.read())
-
-def validate_audio(file_path, filename, result_id, msisdn, device_code):
-    """
-        Mengecek apakah audio sudah sesuai standar atau belum
-        durasi audio tidak boleh 0
-        channels audio 1
-        sample rate 48_000 Hz
-    """
-
-    classes = None
-
-    audio_info = WAVE(file_path).info
-
-    if audio_info.length < 1:
-        classes, status = AUDIO_INFO_STATUS.get("detik").values()
-    elif audio_info.channels != 1:
-        classes, status = AUDIO_INFO_STATUS.get("channels").values()
-    elif audio_info.sample_rate != 48_000:
-        classes, status = AUDIO_INFO_STATUS.get("sample_rate").values()
-
-    if classes is None:
-        return True
-
-    update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}"
-    result_update = requests.put(update_url)
-
-    print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}")
-    print(f"{datetime.now()}\t PUT Status: {result_update.status_code}, {result_update.content}")
-
-    return False
 
 def main():
     """
@@ -67,8 +29,7 @@ def main():
     # pylint: disable=too-many-locals, broad-except, invalid-name
 
     try:
-        get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
-        result_get = requests.get(get_url, timeout=10)
+        result_get = do_get()
 
         if result_get.status_code >= 300:
             print(f"{datetime.now()}\t GET Status: {result_get.status_code}")
@@ -81,7 +42,16 @@ def main():
 
         filename = audio_url.split('download?name=')[1]
         file_path_raw = audio_downloader(audio_url, filename)
-        file_path = samplerate_conv(file_path_raw)
+        file_path, error = samplerate_conv(file_path_raw)
+        if error:
+            do_put(
+                filename=filename,
+                device_code=device_code,
+                result_id=result_id,
+                msisdn=msisdn,
+                status=3,
+                classes="unknown (masalah audio)",
+            )
 
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
 
@@ -97,12 +67,16 @@ def main():
         classes, status, text = ringing_recognition(file_path, provider)
         ttl_process = str(round(time.perf_counter() - strt_process, 2)) + "s"
 
-        print(f"{datetime.now()}\t {filename}, Status: {status}, Deskripsi: {classes}, Time Process: {ttl_process}")
-
-        update_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}&deviceCode={device_code}&id={result_id}&msisdn={msisdn}&status={status}&desc={classes}&text={text}"
-        result_update = requests.put(update_url)
-
-        print(f"{datetime.now()}\t PUT Status: {result_update.status_code}, {result_update.content}")
+        do_put(
+            filename=filename,
+            device_code=device_code,
+            result_id=result_id,
+            msisdn=msisdn,
+            status=status,
+            classes=classes,
+            ttl_process=ttl_process,
+            text=text
+        )
 
         os.remove(file_path)
 
