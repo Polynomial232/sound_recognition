@@ -99,7 +99,7 @@ while True:
         RESET = False
 
     status_code = main()
-    cooldown = COOLDOWN if status_code != 400 else 30
+    cooldown = COOLDOWN if status_code != 400 else 5
     time.sleep(cooldown)
 
     if (time.perf_counter() - start) >= int(TIME_DELETE):

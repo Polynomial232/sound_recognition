@@ -20,6 +20,6 @@ def do_put(filename, device_code, result_id, msisdn, status,classes, ttl_process
 
 def do_get():
     get_url = f"http://{IP_API}:{PORT_API}/kamikaze/voiceCheck?pcCode={PC_CODE}"
-    result_get = requests.get(get_url, timeout=10)
+    result_get = requests.get(get_url, timeout=120)
 
     return result_get
