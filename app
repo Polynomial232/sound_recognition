@@ -49,9 +49,10 @@ def main():
                 device_code=device_code,
                 result_id=result_id,
                 msisdn=msisdn,
-                status=3,
+                status=300,
                 classes="unknown (masalah audio)",
             )
+            return 200
 
         valid = validate_audio(file_path, filename, result_id, msisdn, device_code)
 
